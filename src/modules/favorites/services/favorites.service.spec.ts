@@ -1,8 +1,7 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import 'reflect-metadata';
 import { NotFoundException, ConflictException } from '@nestjs/common';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { FavoritesService } from './favorites.service';
-import { PrismaService } from '@/common/prisma.service';
 import {
   createMockPrismaService,
   type MockedPrismaClient,
@@ -25,17 +24,8 @@ describe('FavoritesService', () => {
   beforeEach(async () => {
     mockPrismaService = createMockPrismaService();
 
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        FavoritesService,
-        {
-          provide: PrismaService,
-          useValue: mockPrismaService,
-        },
-      ],
-    }).compile();
-
-    service = module.get<FavoritesService>(FavoritesService);
+    // Manually create service with mock Prisma
+    service = new FavoritesService(mockPrismaService as any);
   });
 
   describe('addFavorite', () => {

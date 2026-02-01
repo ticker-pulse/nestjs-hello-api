@@ -1,8 +1,7 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import 'reflect-metadata';
 import { NotFoundException } from '@nestjs/common';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { ProductsService } from './products.service';
-import { PrismaService } from '@/common/prisma.service';
 import {
   createMockPrismaService,
   type MockedPrismaClient,
@@ -27,17 +26,8 @@ describe('ProductsService', () => {
   beforeEach(async () => {
     mockPrismaService = createMockPrismaService();
 
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        ProductsService,
-        {
-          provide: PrismaService,
-          useValue: mockPrismaService,
-        },
-      ],
-    }).compile();
-
-    service = module.get<ProductsService>(ProductsService);
+    // Manually create service with mock Prisma
+    service = new ProductsService(mockPrismaService as any);
   });
 
   describe('create', () => {

@@ -1,7 +1,8 @@
+import 'reflect-metadata';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
-import * as request from 'supertest';
+import request from 'supertest';
 import { AppModule } from '@/app.module';
 import { resetTestDatabase, setupTestDatabase, teardownTestDatabase } from '../setup';
 

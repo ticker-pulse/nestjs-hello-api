@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { describe, it, expect, beforeEach } from 'vitest';
@@ -25,17 +26,8 @@ describe('UsersController', () => {
   beforeEach(async () => {
     service = createMockUsersService();
 
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [UsersController],
-      providers: [
-        {
-          provide: UsersService,
-          useValue: service,
-        },
-      ],
-    }).compile();
-
-    controller = module.get<UsersController>(UsersController);
+    // Manually create controller with mock service
+    controller = new UsersController(service as any);
   });
 
   describe('POST /users', () => {

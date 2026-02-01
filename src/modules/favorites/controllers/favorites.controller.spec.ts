@@ -1,8 +1,7 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import 'reflect-metadata';
 import { NotFoundException, ConflictException } from '@nestjs/common';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { FavoritesController } from './favorites.controller';
-import { FavoritesService } from '../services/favorites.service';
 import {
   createMockFavoritesService,
   type MockedFavoritesService,
@@ -27,17 +26,8 @@ describe('FavoritesController', () => {
   beforeEach(async () => {
     service = createMockFavoritesService();
 
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [FavoritesController],
-      providers: [
-        {
-          provide: FavoritesService,
-          useValue: service,
-        },
-      ],
-    }).compile();
-
-    controller = module.get<FavoritesController>(FavoritesController);
+    // Manually create controller with mock service
+    controller = new FavoritesController(service as any);
   });
 
   describe('POST /users/:userId/favorites', () => {

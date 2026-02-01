@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { execSync } from 'child_process';
 
 export const testPrisma = new PrismaClient();
 
@@ -6,8 +7,12 @@ export async function setupTestDatabase() {
   try {
     // Verify connection
     await testPrisma.$queryRaw`SELECT 1`;
+
+    // Run migrations
+    console.log('Running database migrations...');
+    execSync('pnpm prisma migrate deploy', { stdio: 'inherit' });
   } catch (error) {
-    console.error('Failed to connect to test database:', error);
+    console.error('Failed to setup test database:', error);
     throw error;
   }
 }
