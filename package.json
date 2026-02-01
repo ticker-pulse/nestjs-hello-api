@@ -11,8 +11,7 @@
     "debug": "nest start --debug --watch",
     "test": "vitest",
     "test:run": "vitest run",
-    "test:e2e": "vitest run --dir src/test/e2e",
-    "test:ui": "vitest --ui",
+    "test:e2e": "vitest run src/test/e2e --config vitest.config.e2e.ts",
     "test:cov": "vitest run --coverage",
     "db:docker:up": "docker-compose up -d",
     "db:docker:down": "docker-compose down",
@@ -43,6 +42,7 @@
     "@nestjs/cli": "^11.0.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.1.12",
+    "@swc/core": "^1.15.11",
     "@types/node": "^22.15.21",
     "@types/supertest": "^6.0.3",
     "@typescript-eslint/eslint-plugin": "^8.33.1",
@@ -57,6 +57,7 @@
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
+    "unplugin-swc": "^1.5.9",
     "vitest": "^1.1.1"
   },
   "engines": {

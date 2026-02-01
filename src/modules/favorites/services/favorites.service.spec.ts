@@ -1,7 +1,6 @@
 import 'reflect-metadata';
-import { vi } from 'vitest';
-import { NotFoundException, ConflictException } from '@nestjs/common';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { ConflictException, NotFoundException } from '@nestjs/common';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { FavoritesService } from './favorites.service';
 import { PrismaService } from '@/common/prisma.service';
 import {

@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
 import { execSync } from 'child_process';
+import { PrismaClient } from '@prisma/client';
 
 /**
  * Test database client.
@@ -25,7 +25,7 @@ function validateTestDatabase(): void {
   }
 }
 
-export async function setupTestDatabase() {
+export async function setupTestDatabase(): Promise<void> {
   validateTestDatabase();
 
   try {
@@ -33,6 +33,7 @@ export async function setupTestDatabase() {
     await testPrisma.$queryRaw`SELECT 1`;
 
     // Run migrations using the test database URL
+    // eslint-disable-next-line no-console
     console.log('Running database migrations...');
     const env = {
       ...process.env,
@@ -45,11 +46,11 @@ export async function setupTestDatabase() {
   }
 }
 
-export async function teardownTestDatabase() {
+export async function teardownTestDatabase(): Promise<void> {
   await testPrisma.$disconnect();
 }
 
-export async function resetTestDatabase() {
+export async function resetTestDatabase(): Promise<void> {
   // Delete all data in order of foreign key dependencies
   await testPrisma.userFavorite.deleteMany();
   await testPrisma.user.deleteMany();

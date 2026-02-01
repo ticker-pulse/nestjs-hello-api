@@ -1,9 +1,12 @@
+import { Product, User, UserFavorite } from '@prisma/client';
 import { testPrisma } from '../setup';
 
 let userCounter = 0;
 let productCounter = 0;
 
-export async function createTestUser(overrides?: { name?: string; email?: string; phone?: string }) {
+type FavoriteWithProduct = UserFavorite & { product: Product };
+
+export async function createTestUser(overrides?: { name?: string; email?: string; phone?: string }): Promise<User> {
   userCounter++;
   return testPrisma.user.create({
     data: {
@@ -22,7 +25,7 @@ export async function createTestProduct(
     stock?: number;
     sku?: string;
   },
-) {
+): Promise<Product> {
   productCounter++;
   return testPrisma.product.create({
     data: {
@@ -39,7 +42,7 @@ export async function createTestFavorite(
   userId: string,
   productId: string,
   overrides?: { notes?: string },
-) {
+): Promise<FavoriteWithProduct> {
   return testPrisma.userFavorite.create({
     data: {
       userId,

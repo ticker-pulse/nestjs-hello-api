@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { NotFoundException } from '@nestjs/common';
 import { describe, it, expect, beforeEach } from 'vitest';
-import { ProductsController } from './products.controller';
 import { ProductsService } from '../services/products.service';
+import { ProductsController } from './products.controller';
 import {
   createMockProductsService,
   type MockedProductsService,

@@ -1,10 +1,10 @@
 import 'reflect-metadata';
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
+import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
-import { AppModule } from '@/app.module';
+import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
 import { resetTestDatabase, setupTestDatabase, teardownTestDatabase } from '../setup';
+import { AppModule } from '@/app.module';
 
 describe('Favorites E2E', () => {
   let app: INestApplication;
@@ -116,7 +116,7 @@ describe('Favorites E2E', () => {
     it('should return 404 for non-existent product', () => {
       return request(app.getHttpServer())
         .post(`/users/${userId}/favorites`)
-        .send({ productId: 'non-existent-product' })
+        .send({ productId: '00000000-0000-0000-0000-000000000000' })
         .expect(404);
     });
 

@@ -9,9 +9,12 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { FavoritesService } from '../services/favorites.service';
+import { Product, UserFavorite } from '@prisma/client';
 import { AddFavoriteDto } from '../dtos/add-favorite.dto';
 import { UpdateFavoriteDto } from '../dtos/update-favorite.dto';
+import { FavoritesService } from '../services/favorites.service';
+
+type FavoriteWithProduct = UserFavorite & { product: Product };
 
 @Controller('users/:userId/favorites')
 export class FavoritesController {
@@ -22,13 +25,13 @@ export class FavoritesController {
   async addFavorite(
     @Param('userId') userId: string,
     @Body() dto: AddFavoriteDto,
-  ) {
+  ): Promise<FavoriteWithProduct> {
     return this.favoritesService.addFavorite(userId, dto);
   }
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async getUserFavorites(@Param('userId') userId: string) {
+  async getUserFavorites(@Param('userId') userId: string): Promise<FavoriteWithProduct[]> {
     return this.favoritesService.getUserFavorites(userId);
   }
 
@@ -37,7 +40,7 @@ export class FavoritesController {
   async getFavorite(
     @Param('userId') userId: string,
     @Param('productId') productId: string,
-  ) {
+  ): Promise<FavoriteWithProduct> {
     return this.favoritesService.getFavorite(userId, productId);
   }
 
@@ -47,7 +50,7 @@ export class FavoritesController {
     @Param('userId') userId: string,
     @Param('productId') productId: string,
     @Body() dto: UpdateFavoriteDto,
-  ) {
+  ): Promise<FavoriteWithProduct> {
     return this.favoritesService.updateFavorite(userId, productId, dto);
   }
 
@@ -56,7 +59,7 @@ export class FavoritesController {
   async removeFavorite(
     @Param('userId') userId: string,
     @Param('productId') productId: string,
-  ) {
+  ): Promise<void> {
     return this.favoritesService.removeFavorite(userId, productId);
   }
 }

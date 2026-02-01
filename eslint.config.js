@@ -99,9 +99,9 @@ export default [
     },
   },
   {
-    files: ['**/*.spec.ts', '**/*.e2e.spec.ts'],
+    files: ['**/*.spec.ts', '**/*.e2e.spec.ts', '**/test/mocks/**/*.ts'],
     rules: {
-      // Relax rules for test files
+      // Relax rules for test files and mocks
       '@typescript-eslint/unbound-method': 'off',
       '@typescript-eslint/no-unsafe-argument': 'off',
       '@typescript-eslint/no-unsafe-assignment': 'off',
@@ -109,6 +109,7 @@ export default [
       '@typescript-eslint/no-unsafe-return': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/require-await': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
     },
   },
 ];

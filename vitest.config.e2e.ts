@@ -11,12 +11,15 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
-    include: ['src/**/*.spec.ts'],
-    exclude: ['src/test/e2e/**/*.spec.ts'],
+    include: ['**/*.e2e.spec.ts'],
+    exclude: ['**/node_modules/**'],
     setupFiles: ['./src/test/setup.global.ts'],
-    coverage: {
-      provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+    testTimeout: 30000,
+    hookTimeout: 30000,
+    // Run e2e tests sequentially to avoid database conflicts
+    fileParallelism: false,
+    sequence: {
+      concurrent: false,
     },
   },
   resolve: {
@@ -27,4 +30,3 @@ export default defineConfig({
     },
   },
 });
-

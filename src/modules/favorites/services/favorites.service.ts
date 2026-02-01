@@ -3,9 +3,12 @@ import {
   NotFoundException,
   ConflictException,
 } from '@nestjs/common';
-import { PrismaService } from '@/common/prisma.service';
+import { Product, UserFavorite } from '@prisma/client';
 import { AddFavoriteDto } from '../dtos/add-favorite.dto';
 import { UpdateFavoriteDto } from '../dtos/update-favorite.dto';
+import { PrismaService } from '@/common/prisma.service';
+
+type FavoriteWithProduct = UserFavorite & { product: Product };
 
 @Injectable()
 export class FavoritesService {
@@ -15,7 +18,7 @@ export class FavoritesService {
    * Add a product to user's favorites.
    * Uses a transaction to prevent race conditions when checking for duplicates.
    */
-  async addFavorite(userId: string, dto: AddFavoriteDto) {
+  async addFavorite(userId: string, dto: AddFavoriteDto): Promise<FavoriteWithProduct> {
     return this.prisma.$transaction(async (tx) => {
       // Verify user exists
       const user = await tx.user.findUnique({
@@ -59,7 +62,7 @@ export class FavoritesService {
     });
   }
 
-  async getUserFavorites(userId: string) {
+  async getUserFavorites(userId: string): Promise<FavoriteWithProduct[]> {
     // Verify user exists
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
@@ -75,7 +78,7 @@ export class FavoritesService {
     });
   }
 
-  async getFavorite(userId: string, productId: string) {
+  async getFavorite(userId: string, productId: string): Promise<FavoriteWithProduct> {
     const favorite = await this.prisma.userFavorite.findUnique({
       where: {
         userId_productId: {
@@ -97,7 +100,7 @@ export class FavoritesService {
     userId: string,
     productId: string,
     dto: UpdateFavoriteDto,
-  ) {
+  ): Promise<FavoriteWithProduct> {
     // Verify favorite exists
     const favorite = await this.prisma.userFavorite.findUnique({
       where: {
@@ -126,7 +129,7 @@ export class FavoritesService {
     });
   }
 
-  async removeFavorite(userId: string, productId: string) {
+  async removeFavorite(userId: string, productId: string): Promise<void> {
     // Verify favorite exists
     const favorite = await this.prisma.userFavorite.findUnique({
       where: {

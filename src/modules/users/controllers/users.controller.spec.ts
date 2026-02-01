@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { NotFoundException } from '@nestjs/common';
 import { describe, it, expect, beforeEach } from 'vitest';
-import { UsersController } from './users.controller';
 import { UsersService } from '../services/users.service';
+import { UsersController } from './users.controller';
 import {
   createMockUsersService,
   type MockedUsersService,

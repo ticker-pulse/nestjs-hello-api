@@ -1,5 +1,4 @@
-import { vi } from 'vitest';
-import type { MockedFunction } from 'vitest';
+import { vi, type MockedFunction } from 'vitest';
 import type { ProductsService } from '@/modules/products/services/products.service';
 
 export type MockedProductsService = {
@@ -13,5 +12,5 @@ export function createMockProductsService(): MockedProductsService {
     findOne: vi.fn(),
     update: vi.fn(),
     remove: vi.fn(),
-  };
+  } as MockedProductsService;
 }

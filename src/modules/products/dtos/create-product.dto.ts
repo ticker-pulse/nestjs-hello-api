@@ -1,5 +1,5 @@
-import { IsString, IsNumber, IsOptional, IsDecimal } from 'class-validator';
 import { Type } from 'class-transformer';
+import { IsString, IsNumber, IsOptional, Matches } from 'class-validator';
 
 export class CreateProductDto {
   @IsString()
@@ -10,6 +10,9 @@ export class CreateProductDto {
   description?: string;
 
   @IsString()
+  @Matches(/^\d+(\.\d{1,2})?$/, {
+    message: 'price must be a valid decimal number (e.g., "99.99")',
+  })
   price!: string;
 
   @Type(() => Number)

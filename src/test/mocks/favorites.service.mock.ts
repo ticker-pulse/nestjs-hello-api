@@ -1,5 +1,4 @@
-import { vi } from 'vitest';
-import type { MockedFunction } from 'vitest';
+import { vi, type MockedFunction } from 'vitest';
 import type { FavoritesService } from '@/modules/favorites/services/favorites.service';
 
 export type MockedFavoritesService = {
@@ -13,5 +12,5 @@ export function createMockFavoritesService(): MockedFavoritesService {
     getFavorite: vi.fn(),
     updateFavorite: vi.fn(),
     removeFavorite: vi.fn(),
-  };
+  } as MockedFavoritesService;
 }

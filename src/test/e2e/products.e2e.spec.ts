@@ -1,10 +1,10 @@
 import 'reflect-metadata';
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
+import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
-import { AppModule } from '@/app.module';
+import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
 import { resetTestDatabase, setupTestDatabase, teardownTestDatabase } from '../setup';
+import { AppModule } from '@/app.module';
 
 describe('Products E2E', () => {
   let app: INestApplication;

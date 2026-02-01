@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { NotFoundException, ConflictException } from '@nestjs/common';
 import { describe, it, expect, beforeEach } from 'vitest';
-import { FavoritesController } from './favorites.controller';
 import { FavoritesService } from '../services/favorites.service';
+import { FavoritesController } from './favorites.controller';
 import {
   createMockFavoritesService,
   type MockedFavoritesService,

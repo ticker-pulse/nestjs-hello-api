@@ -1,5 +1,4 @@
-import { vi } from 'vitest';
-import type { MockedFunction } from 'vitest';
+import { vi, type MockedFunction } from 'vitest';
 import type { PrismaService } from '@/common/prisma.service';
 
 /**
