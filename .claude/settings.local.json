@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm install)",
+      "Bash(pnpm db:docker:up:*)",
+      "Bash(pnpm prisma:generate:*)",
+      "Bash(pnpm db:migrate:dev:*)",
+      "Bash(pnpm prisma migrate reset:*)",
+      "Bash(PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION=\"yes\" pnpm prisma migrate reset:*)",
+      "Bash(pnpm db:seed:*)",
+      "Bash(pnpm prisma migrate dev:*)",
+      "Bash(pnpm build:*)",
+      "Bash(timeout 10 pnpm dev:*)",
+      "Bash(lsof:*)",
+      "Bash(curl:*)",
+      "Bash(tree:*)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm test:run:*)",
+      "Bash(ls:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nComplete Favorites/Wishlist feature with comprehensive testing\n\n## Summary\n\nImplemented a complete many-to-many user-product relationship \\(Favorites/Wishlist\\) \nfeature for NestJS API with 108 comprehensive tests and proper TypeScript typing.\n\n## Changes\n\n### Database \\(Prisma\\)\n- Added UserFavorite join table with userId, productId, notes fields\n- Configured cascade deletes and unique constraints\n- Created migration: 20260201194630_add_user_favorites\n\n### Favorites Module\n- FavoritesController with 5 REST endpoints \\(nested routes\\)\n- FavoritesService with CRUD operations\n- DTOs for input validation \\(AddFavoriteDto, UpdateFavoriteDto\\)\n- Proper error handling \\(NotFoundException, ConflictException\\)\n- Status codes: 201 \\(created\\), 200 \\(ok\\), 204 \\(no content\\)\n\n### Testing Infrastructure\n- 4 properly typed mock factories \\(no `any` types\\):\n  * prisma.service.mock.ts - PrismaService mock\n  * users.service.mock.ts - UsersService mock\n  * products.service.mock.ts - ProductsService mock\n  * favorites.service.mock.ts - FavoritesService mock\n- Uses TypeScript mapped types: [K in keyof Service]: MockedFunction<Service[K]>\n- Test utilities: setup.ts, factories.ts for test data generation\n\n### Test Coverage \\(108 tests total\\)\n- Unit Tests: 30 tests \\(3 service files\\)\n- Integration Tests: 33 tests \\(3 controller files\\)\n- E2E Tests: 45 tests \\(3 complete workflows\\)\n- Tests for error handling, cascade deletes, unique constraints\n\n### Documentation\n- IMPLEMENTATION_SUMMARY.md - Complete overview and architecture\n- TESTING_GUIDELINES.md - Best practices for typed mocks and why to avoid `any`\n- Updated README.md with Favorites endpoints and pnpm scripts\n\n## Key Features\n✅ No `any` types - Full TypeScript type safety\n✅ Proper mock factories with mapped types\n✅ Complete error handling\n✅ Cascade delete constraints\n✅ Unique constraint on [userId, productId]\n✅ Nested RESTful routes\n✅ Comprehensive test coverage\n✅ pnpm as package manager \\(no npm\\)\n\n## Next Steps\n1. Run: pnpm db:docker:up\n2. Run: pnpm test:run to verify all tests pass\n3. Manual testing with curl/Postman\n4. Deploy to production\n\nCo-Authored-By: Claude Haiku 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
+    ]
+  }
+}

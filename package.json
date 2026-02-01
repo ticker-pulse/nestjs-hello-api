@@ -1,0 +1,57 @@
+{
+  "name": "nestjs-hello-api",
+  "version": "1.0.0",
+  "description": "Production-ready NestJS API with Prisma and PostgreSQL",
+  "author": "Your Name",
+  "license": "ISC",
+  "scripts": {
+    "build": "nest build",
+    "start": "node dist/main",
+    "dev": "nest start --watch",
+    "debug": "nest start --debug --watch",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:cov": "vitest run --coverage",
+    "db:docker:up": "docker-compose up -d",
+    "db:docker:down": "docker-compose down",
+    "db:docker:logs": "docker-compose logs -f postgres",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:migrate": "prisma migrate deploy",
+    "db:seed": "node prisma/seed.js",
+    "db:push": "prisma db push",
+    "prisma:generate": "prisma generate",
+    "prisma:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.1.2",
+    "@nestjs/core": "^11.1.2",
+    "@nestjs/mapped-types": "^2.0.4",
+    "@nestjs/platform-express": "^11.1.2",
+    "@prisma/client": "^6.0.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "reflect-metadata": "^0.2.1",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.0",
+    "@nestjs/schematics": "^11.0.0",
+    "@nestjs/testing": "^11.1.12",
+    "@types/node": "^20.10.6",
+    "@types/supertest": "^6.0.3",
+    "@typescript-eslint/eslint-plugin": "^6.16.0",
+    "@typescript-eslint/parser": "^6.16.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.1",
+    "prisma": "^6.0.0",
+    "supertest": "^7.2.2",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "vitest": "^1.1.1"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
