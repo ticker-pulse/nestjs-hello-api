@@ -1,5 +1,4 @@
 import 'reflect-metadata';
-import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { ProductsController } from './products.controller';
@@ -28,8 +27,8 @@ describe('ProductsController', () => {
   beforeEach(async () => {
     service = createMockProductsService();
 
-    // Manually create controller with mock service
-    controller = new ProductsController(service as any);
+    // Create controller with type-safe mock
+    controller = new ProductsController(service as unknown as ProductsService);
   });
 
   describe('POST /products', () => {

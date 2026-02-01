@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { NotFoundException } from '@nestjs/common';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { ProductsService } from './products.service';
+import { PrismaService } from '@/common/prisma.service';
 import {
   createMockPrismaService,
   type MockedPrismaClient,
@@ -26,8 +27,8 @@ describe('ProductsService', () => {
   beforeEach(async () => {
     mockPrismaService = createMockPrismaService();
 
-    // Manually create service with mock Prisma
-    service = new ProductsService(mockPrismaService as any);
+    // Create service with type-safe mock
+    service = new ProductsService(mockPrismaService as unknown as PrismaService);
   });
 
   describe('create', () => {

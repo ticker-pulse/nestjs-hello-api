@@ -11,47 +11,51 @@ import { UpdateFavoriteDto } from '../dtos/update-favorite.dto';
 export class FavoritesService {
   constructor(private prisma: PrismaService) {}
 
+  /**
+   * Add a product to user's favorites.
+   * Uses a transaction to prevent race conditions when checking for duplicates.
+   */
   async addFavorite(userId: string, dto: AddFavoriteDto) {
-    // Verify user exists
-    const user = await this.prisma.user.findUnique({
-      where: { id: userId },
-    });
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+    return this.prisma.$transaction(async (tx) => {
+      // Verify user exists
+      const user = await tx.user.findUnique({
+        where: { id: userId },
+      });
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
 
-    // Verify product exists
-    const product = await this.prisma.product.findUnique({
-      where: { id: dto.productId },
-    });
-    if (!product) {
-      throw new NotFoundException('Product not found');
-    }
+      // Verify product exists
+      const product = await tx.product.findUnique({
+        where: { id: dto.productId },
+      });
+      if (!product) {
+        throw new NotFoundException('Product not found');
+      }
 
-    // Check if favorite already exists
-    const existingFavorite = await this.prisma.userFavorite.findUnique({
-      where: {
-        userId_productId: {
+      // Check if favorite already exists
+      const existingFavorite = await tx.userFavorite.findUnique({
+        where: {
+          userId_productId: {
+            userId,
+            productId: dto.productId,
+          },
+        },
+      });
+      if (existingFavorite) {
+        throw new ConflictException('Product is already in favorites');
+      }
+
+      return tx.userFavorite.create({
+        data: {
           userId,
           productId: dto.productId,
+          notes: dto.notes,
         },
-      },
-    });
-    if (existingFavorite) {
-      throw new ConflictException(
-        'Product is already in favorites',
-      );
-    }
-
-    return this.prisma.userFavorite.create({
-      data: {
-        userId,
-        productId: dto.productId,
-        notes: dto.notes,
-      },
-      include: {
-        product: true,
-      },
+        include: {
+          product: true,
+        },
+      });
     });
   }
 

@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { NotFoundException, ConflictException } from '@nestjs/common';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { FavoritesController } from './favorites.controller';
+import { FavoritesService } from '../services/favorites.service';
 import {
   createMockFavoritesService,
   type MockedFavoritesService,
@@ -26,8 +27,8 @@ describe('FavoritesController', () => {
   beforeEach(async () => {
     service = createMockFavoritesService();
 
-    // Manually create controller with mock service
-    controller = new FavoritesController(service as any);
+    // Create controller with type-safe mock
+    controller = new FavoritesController(service as unknown as FavoritesService);
   });
 
   describe('POST /users/:userId/favorites', () => {

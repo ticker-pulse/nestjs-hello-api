@@ -1,7 +1,9 @@
 import 'reflect-metadata';
+import { vi } from 'vitest';
 import { NotFoundException, ConflictException } from '@nestjs/common';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { FavoritesService } from './favorites.service';
+import { PrismaService } from '@/common/prisma.service';
 import {
   createMockPrismaService,
   type MockedPrismaClient,
@@ -24,18 +26,23 @@ describe('FavoritesService', () => {
   beforeEach(async () => {
     mockPrismaService = createMockPrismaService();
 
-    // Manually create service with mock Prisma
-    service = new FavoritesService(mockPrismaService as any);
+    // Create service with type-safe mock
+    service = new FavoritesService(mockPrismaService as unknown as PrismaService);
   });
 
   describe('addFavorite', () => {
     it('should add a favorite successfully', async () => {
-      mockPrismaService.user.findUnique.mockResolvedValue(mockUser);
-      mockPrismaService.product.findUnique.mockResolvedValue(mockProduct);
-      mockPrismaService.userFavorite.findUnique.mockResolvedValue(null);
-      mockPrismaService.userFavorite.create.mockResolvedValue({
-        ...mockFavorite,
-        product: mockProduct,
+      // Setup transaction mock to execute the callback with mock delegates
+      mockPrismaService.$transaction.mockImplementation(async (fn) => {
+        const txMock = {
+          user: { findUnique: vi.fn().mockResolvedValue(mockUser) },
+          product: { findUnique: vi.fn().mockResolvedValue(mockProduct) },
+          userFavorite: {
+            findUnique: vi.fn().mockResolvedValue(null),
+            create: vi.fn().mockResolvedValue({ ...mockFavorite, product: mockProduct }),
+          },
+        };
+        return fn(txMock);
       });
 
       const result = await service.addFavorite(mockUser.id, {
@@ -47,7 +54,14 @@ describe('FavoritesService', () => {
     });
 
     it('should throw NotFoundException when user does not exist', async () => {
-      mockPrismaService.user.findUnique.mockResolvedValue(null);
+      mockPrismaService.$transaction.mockImplementation(async (fn) => {
+        const txMock = {
+          user: { findUnique: vi.fn().mockResolvedValue(null) },
+          product: { findUnique: vi.fn() },
+          userFavorite: { findUnique: vi.fn(), create: vi.fn() },
+        };
+        return fn(txMock);
+      });
 
       await expect(
         service.addFavorite('non-existent-user', {
@@ -57,8 +71,14 @@ describe('FavoritesService', () => {
     });
 
     it('should throw NotFoundException when product does not exist', async () => {
-      mockPrismaService.user.findUnique.mockResolvedValue(mockUser);
-      mockPrismaService.product.findUnique.mockResolvedValue(null);
+      mockPrismaService.$transaction.mockImplementation(async (fn) => {
+        const txMock = {
+          user: { findUnique: vi.fn().mockResolvedValue(mockUser) },
+          product: { findUnique: vi.fn().mockResolvedValue(null) },
+          userFavorite: { findUnique: vi.fn(), create: vi.fn() },
+        };
+        return fn(txMock);
+      });
 
       await expect(
         service.addFavorite(mockUser.id, {
@@ -68,9 +88,17 @@ describe('FavoritesService', () => {
     });
 
     it('should throw ConflictException when favorite already exists', async () => {
-      mockPrismaService.user.findUnique.mockResolvedValue(mockUser);
-      mockPrismaService.product.findUnique.mockResolvedValue(mockProduct);
-      mockPrismaService.userFavorite.findUnique.mockResolvedValue(mockFavorite);
+      mockPrismaService.$transaction.mockImplementation(async (fn) => {
+        const txMock = {
+          user: { findUnique: vi.fn().mockResolvedValue(mockUser) },
+          product: { findUnique: vi.fn().mockResolvedValue(mockProduct) },
+          userFavorite: {
+            findUnique: vi.fn().mockResolvedValue(mockFavorite),
+            create: vi.fn(),
+          },
+        };
+        return fn(txMock);
+      });
 
       await expect(
         service.addFavorite(mockUser.id, {
